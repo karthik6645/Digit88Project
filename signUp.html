@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="signUp.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <!-- <script src="https://kit.fontawesome.com/c795ee9098.js" crossorigin="anonymous"></script> -->
+</head>
+<body>
+    <header></header>
+    <nav class="container border mt-2 mb-2"><h2>Dashboard</h2></nav>
+    <section>
+        <div class="container-fluid border p-2" id="signIn">
+            <center><h2 id="signinName" class="pt-3">SIGN UP</h2></center><hr>
+            <form action="dashboard.html" onsubmit="return validateCom()">
+              <div class="form-group">
+                <label for=""></label>
+                <input type="text" class="form-control dim" id="userId" placeholder="userId" name="id" title="Must be 4 characters staring with letter and 3 digits" onkeyup="validate()" required>
+                <span id="spanui"></span>
+              </div>
+              <div class="form-group">
+                <label for=""></label>
+                <input type="text" class="form-control dim" id="userName" placeholder="Name" onkeyup="validateN()" title="Should contain atleast 4 charcters" name="email" required>
+                <span id="spanun"></span>
+              </div>
+              <div class="form-group">
+                <label for=""></label>
+                <input type="email" class="form-control dim" id="email1" placeholder="Email" name="email" onkeyup="validateE()" title="Should end with @gmail.com" required>
+                <span id="spanue"></span>
+              </div>
+              <div class="form-group">
+                <label for=""></label>
+                <input type="password" class="form-control dim" id="pwd1" placeholder="Password" name="pswd" onkeyup="validateP()" title="Should contain atleast 6 chararctes (1 char, 1 digit, 1 special char)" required>
+                <span id="spanup"></span>
+              </div>
+              <div class="form-group">
+                <label for=""></label>
+                <input type="date" class="form-control dim" id="dob" placeholder="DOB" name="dob" onkeyup="validateD()" required>
+              </div>
+              <div class="form-group">
+              <select name="" id="myselect" class="form-control w-75" required onchange="org2(myselect.value)"> 
+                <option value="">Select Org</option>
+                <option data-toggle="modal" data-target="#myModal" value="createOrg">Create Org</option>
+                <option value="org1">Org 1</option>
+              </select>
+              <span id="orgVerify"></span>
+            </div>
+              <script>
+          $(document).ready(function(){ 
+            
+                $('#myselect').change(function() { 
+                    var opval = $(this).val();
+                       if(opval=="createOrg"){
+                        $('#myModal').modal("show"); 
+                       }
+                     });
+                  });
+              </script>
+              <div class="form-group form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" id="adminCheck" name="" onclick="validateAdmin()">is Admin
+                </label>
+                <a href="index.html" style="text-decoration: none;" class="text-info float-right">Sign In</a>
+              </div>
+              <button type="submit" class="btn btn-primary mx-auto" style="display: block;" id="btnbg">SignUp</button>
+             
+            </form>
+           
+          </div>
+          <div class="modal fade " id="myModal">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
+              <div class="modal-content">
+              
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Create Org</h4>
+                 
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form action="#"  onsubmit="return org2()">
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for=""></label>
+                        <input type="text" class="form-control " id="org" placeholder="Org name" name="org" required>
+                        <!-- <span id="orgValE"></span> -->
+                      </div>
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary " data-dismiss="modal" id="orgC" onclick="org2()">Save</button>
+                  <!-- <button type="submit" class="btn btn-danger "  data-dismiss="madal" id="orgC">Cancel</button> -->
+                </div>
+                </form> 
+              </div>
+            </div>
+          </div>
+
+          <script>
+              $(document).ready(function(){
+                 var orgArr
+                if(localStorage.getItem("orgArr")==null){
+                     orgArr=[]
+                    }
+                else{
+                       orgArr=JSON.parse(localStorage.getItem("orgArr"))
+                    }
+                    for(let i in orgArr){
+                  $('select').append("<option value="+orgArr[i]+">"+orgArr[i]+"</option>")
+                 }
+                 var l=0
+                $('#orgC').click(function(){
+                  
+                  var orgVal=$("#org").val()
+                  // var orgArr=[]
+                 console.log(orgArr)
+                 console.log(orgVal)
+                 for(let i in orgArr){
+                     if(orgArr[i]==orgVal){
+                         l=1
+                     }
+                   }
+                  if(orgVal.length>0 && l!=1){
+                  orgArr.push(orgVal)
+                  }
+                  console.log(orgArr)
+                  console.log(typeof JSON.stringify(orgArr))
+                  // localStorage.setItem("userOrg", orgVal)
+                  localStorage.setItem("orgArr",JSON.stringify(orgArr))
+                  console.log("before if "+l)
+                   if(l!=1){
+                  $('select').append("<option value="+orgVal+" selected>"+orgVal+"</option>")
+                   }
+                  // $('select').append("<option value="+orgVal+" selected>"+orgVal+"</option>")
+                })
+                $("#myselect").change(function(){
+                  console.log( $("#myselect").val())
+                })
+               
+              })
+          </script>
+<script>
+$(document).ready(function(){
+$('#userId').val('')
+$('#userId').prop("disabled",false)
+$('#userName').val('')
+$('#email1').val('')
+$('#pwd1').val('')
+$("#pwd1").attr("type","password")
+$('#dob').val('')
+// $('#myselectss').attr("selected",element.org)
+$('#myselectss option[value=""]').attr("selected", "selected");
+$('#adminCheck').prop("checked", false)
+})
+
+</script>
+       </section>
+    <footer></footer>
+</body>
+<script src="signUp.js"></script>
+</html>

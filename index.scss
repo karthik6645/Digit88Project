@@ -1,0 +1,38 @@
+$color:blue;
+$btngb:#f6720e;
+$navBackground:#fff;
+$signWidth:300px;
+$signHeight:50px;
+$inputw:260px;
+$inputh:40px;
+$bodybg:#e6ebf5;
+// $signInh:300px;
+@mixin bg {
+    background-color:$navBackground ;
+}
+p{
+    color: $color;
+}
+body{
+    background-color: $bodybg;
+}
+nav{
+    @include bg;
+}
+#signIn{
+    width: $signWidth;
+    @include bg();
+    #signinName{
+        height: $signHeight;
+    }
+    .dim{
+        width: $inputw;
+        height:$inputh ;
+    }
+    #btnbg{
+     background-color: $btngb;
+    }
+}
+.btnColor{
+    background-color: $btngb;
+}

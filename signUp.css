@@ -1,0 +1,30 @@
+p {
+  color: blue;
+}
+
+body {
+  background-color: #e6ebf5;
+}
+
+nav {
+  background-color: #fff;
+}
+
+#signIn {
+  width: 300px;
+  background-color: #fff;
+}
+#signIn #signinName {
+  height: 50px;
+}
+#signIn .dim {
+  width: 260px;
+  height: 40px;
+}
+#signIn #btnbg {
+  background-color: #f6720e;
+}
+
+.btnColor {
+  background-color: #f6720e;
+}

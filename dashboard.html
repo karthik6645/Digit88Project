@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashborad</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="https://kit.fontawesome.com/c795ee9098.js" crossorigin="anonymous"></script>
+  <script>
+
+  </script>
+</head>
+<body>
+    <header></header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark border mt-2 mb-2 sticky-top">
+        
+        <a class="navbar-brand" href="#">Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="col-sm-9"></ul>
+          <ul class="navbar-nav">
+            <li class="nav-item ">
+                <select name="" id="myselect" class="form-control " onchange="tableC()" required>
+                  <option value="">Select Org</option>
+                  <option value="org1">Org 1</option>
+                </select>
+            </li>
+            <script>
+                 $(document).ready(function(){
+                   var orgArr=new Array()
+                   orgArr=JSON.parse(localStorage.getItem("orgArr"))
+                   console.log(orgArr)
+                  var currUserOrg=localStorage.getItem("userOrg")
+                  console.log(localStorage)
+                  console.log(currUserOrg)
+                 for(let orgVal in orgArr){
+                   if(orgArr[orgVal]==currUserOrg){
+                    $('select').append("<option value="+orgArr[orgVal]+" selected>"+orgArr[orgVal]+"</option>")
+                   }else{
+                  $('select').append("<option value="+orgArr[orgVal]+" >"+orgArr[orgVal]+"</option>")
+                   }
+                 }
+                 })
+
+            </script>
+            <li class="nav-item pl-5">
+                <div class="dropdown">
+                    <button type="button" class="btn btn-primary " data-toggle="dropdown">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="index.html">Sign Out</a>
+                    </div>
+                  </div>
+            </li>
+              
+          </ul>
+        </div>  
+      </nav>
+   <section>
+     <div class="container row mx-auto mt-5"> 
+<span class="col-sm-4 "><span class="ml-5" id="userId2"> Welcome </span></span> 
+<span class="col-sm-4 ">
+  <div class="input-group w-75 ml-5 ">
+  <div class="input-group-prepend">
+    <span class="input-group-text"><i class="fas fa-search"></i></span>
+  </div>
+  <input type="text" class="form-control" placeholder="Search" id="usr2" name="username">
+</div> </span>
+<span class="col-sm-4 ">
+<button class="btn btn-success ml-5 float-right mr-5 btnDis" id="userAddi" data-toggle="modal" data-target="#signUpModal" ><i class="fas fa-plus"></i> Add user</button> </span>
+</div>
+
+<script>
+  $(document).ready(function(){
+    var id=$("#userId2").text()
+    console.log(id)
+    console.log(localStorage)
+    $("#userId2").text("welcome "+localStorage.getItem("userName"))
+  })
+</script>
+<!-- signUp.html -->
+<div>
+  <div class="modal fade " id="signUpModal">
+    <div class="modal-dialog modal modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="textChange">New User</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+       
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="dashboard.html" onsubmit="return validateCom()">
+            <div class="form-group">
+              <label for=""></label>
+              <input type="text" class="form-control dim" id="userId" placeholder="userId" name="id" title="Must be 4 characters staring with letter and 3 digits" onkeyup="validate()" required>
+              <span id="spanui"></span>
+            </div>
+            <div class="form-group">
+              <label for=""></label>
+              <input type="text" class="form-control dim" id="userName" placeholder="Name" onkeyup="validateN()" title="Should contain atleast 4 charcters" name="email" required>
+              <span id="spanun"></span>
+            </div>
+            <div class="form-group">
+              <label for=""></label>
+              <input type="email" class="form-control dim" id="email1" placeholder="Email" name="email" onkeyup="validateE()" title="Should end with @gmail.com" required>
+              <span id="spanue"></span>
+            </div>
+            <div class="form-group">
+              <label for=""></label>
+              <input type="password" class="form-control dim" id="pwd1" placeholder="Password" name="pswd" onkeyup="validateP()" title="Should contain atleast 6 chararctes (1 char, 1 digit, 1 special char)" required>
+              <span id="spanup"></span>
+            </div>
+            <div class="form-group">
+              <label for=""></label>
+              <input type="date" class="form-control dim" id="dob" placeholder="DOB" name="dob" onkeyup="validateD()" required>
+            </div>
+            <div class="form-group">
+            <select name="" id="myselectss" class="form-control w-75" required onchange="org2(myselectss.value)"> 
+              <option value="">Select Org</option>
+              <option  value="createOrg" id='raiseModal'>Create Org</option>
+              <option value="org1">Org 1</option>
+            </select>
+            <span id="orgVerify"></span>
+          </div>
+            <script>
+        $(document).ready(function(){
+          
+          console.log("ready in create modal")
+              $('#myselectss').change(function() { 
+                console.log("in change creaate modal")
+                  var opval = $(this).val();
+                     if(opval=="createOrg"){
+                      console.log("in change creaate modal 2")
+                      $('#myModal').modal("show"); 
+                      console.log("in change creaate modal 3")
+                     }
+                   });
+                  //  $('#raiseModal').click(function(){
+                  //   $('#myModal').modal("show"); 
+                  //  })
+                });
+            </script>
+            <div class="form-group form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" id="adminCheck" name="" onclick="validateAdmin()">is Admin
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary mx-auto" style="display: block;" id="btnbg">Submit</button>
+            </form>
+        <!-- </form>  -->
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- create org copy from signup.html -->
+
+<div class="modal fade " id="myModal">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Create Org</h4>
+       
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form action="#"  onsubmit="return org2()"></form>
+          <div class="form-group">
+              <label for=""></label>
+              <input type="text" class="form-control " id="org" placeholder="Org name" name="org" required>
+              <!-- <span id="orgValE"></span> -->
+            </div>
+      </div>
+      
+      
+        <button type="submit" class="btn btn-primary mx-auto " data-dismiss="modal" id="orgC" onclick="org2()">Save</button><br>
+        <!-- <button type="submit" class="btn btn-danger "  data-dismiss="madal" id="orgC">Cancel</button> -->
+      
+      </form> 
+    </div>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+    
+       var orgArr
+      if(localStorage.getItem("orgArr")==null){
+           orgArr=[]
+          }
+      else{
+             orgArr=JSON.parse(localStorage.getItem("orgArr"))
+          }
+          for(let i in orgArr){
+        $('select').append("<option value="+orgArr[i]+">"+orgArr[i]+"</option>")
+       }
+       var l=0
+      $('#orgC').click(function(){
+        
+        var orgVal=$("#org").val()
+        // var orgArr=[]
+       console.log(orgArr)
+       console.log(orgVal)
+       for(let i in orgArr){
+           if(orgArr[i]==orgVal){
+               l=1
+           }
+         }
+        if(orgVal.length>0 && l!=1){
+        orgArr.push(orgVal)
+        }
+        console.log(orgArr)
+        console.log(typeof JSON.stringify(orgArr))
+        // localStorage.setItem("userOrg", orgVal)
+        localStorage.setItem("orgArr",JSON.stringify(orgArr))
+        console.log("before if "+l)
+         if(l!=1){
+        $('select').append("<option value="+orgVal+" selected>"+orgVal+"</option>")
+         }
+        // $('select').append("<option value="+orgVal+" selected>"+orgVal+"</option>")
+      })
+      $("#myselectss").change(function(){
+        console.log( $("#myselectss").val())
+      })
+     
+    })
+</script>
+<script>
+$(document).ready(function(){
+  
+  console.log("gggg")
+  var tempArr2
+if(localStorage.getItem("tempArr")==null){
+  tempArr2=[]
+}
+else{
+  tempArr2=JSON.parse(localStorage.getItem("tempArr"))
+}
+console.log(tempArr2)
+tempArr2.forEach(element=>{
+  var id5=element.id
+   var id6="#"+id5+"E"
+$(id6).click(function(){
+tempArr2.forEach(element => {
+  if(id5==element.id){
+    $("#textChange").text("Edit User")
+$('#userId').val(element.id)
+$('#userId').prop('disabled',true)
+$('#userName').val(element.name)
+$('#email1').val(element.email)
+$('#pwd1').val(element.pass)
+$("#pwd1").attr("type","text")
+$('#dob').val(element.date)
+// $('#myselectss').attr("value",element.org)
+$('#myselectss option[value="'+element.org+'"]').attr("selected", "selected");
+$('#adminCheck').prop("checked",element.admin)
+localStorage.setItem("edited",'true')
+localStorage.setItem('editId4',element.id)
+// localStorage.setItem("upModal",'true')
+console.log(localStorage.getItem('upModal'))
+  }
+})
+})
+})
+
+})
+</script>
+<div class="container w-75 mt-5">
+    <table class="table table-striped table-hover">
+        <thead>
+          <tr > 
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>DOB</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="myTable2">
+          <tr id="before">
+            <td>1</td>
+            <td>John</td>
+            <td>john@example.com</td>
+            <td>08/11/1997</td>
+            <td><div class=" d-flex"><button class="btn btn-info mr-1 btnDis" disabled="true" id="editBtn" data-toggle="modal" data-target="#signUpModalE"> <i class="fas fa-user-edit"></i> Edit</button> 
+                <button class="btn btn-danger btnDis" data-toggle="modal" data-target="#Delete" ><i class="fas fa-trash"></i> Delete</button> </div></td>
+          </tr>
+          
+          <!-- <tr>
+           <td>1</td>
+            <td>John</td>
+            <td>john@example.com</td>
+            <td>08/11/1997</td>
+            <td><div class=" d-flex"><button class="btn btn-info mr-1 btnDis"  id="editBtn" data-toggle="modal" data-target="#signUpModalE"> <i class="fas fa-user-edit"></i> Edit</button> 
+                <button class="btn btn-danger btnDis" data-toggle="modal" data-target="#Delete" ><i class="fas fa-trash"></i> Delete</button> </div></td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>John</td>
+            <td>john@example.com</td>
+            <td>08/11/1997</td>
+            <td><div class=" d-flex"><button class="btn btn-info mr-1 btnDis"  id="editBtn" data-toggle="modal" data-target="#signUpModalE"> <i class="fas fa-user-edit"></i> Edit</button> 
+                <button class="btn btn-danger btnDis" data-toggle="modal" data-target="#Delete" ><i class="fas fa-trash"></i> Delete</button> </div></td>
+          </tr> -->
+        </tbody>
+      </table>
+      <script>
+        $(document).ready(function(){
+          $("#usr2").on("keyup", function() {
+            console.log(" search key up")
+            var value = $(this).val().toLowerCase();
+            console.log(value)
+            var orgClass=localStorage.getItem('orgClass')
+            orgClass='.'+orgClass
+            console.log(orgClass)
+           $(orgClass).filter(function() {
+             console.log('in filter')
+           $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+           console.log('in filter after')
+    });
+  });
+});
+      </script>
+</div>
+
+<script>
+  $(document).ready(function(){
+    console.log("dddd")
+  var users
+if(localStorage.getItem("users")==null){
+  users=[]
+}
+else{
+  users=JSON.parse(localStorage.getItem("users"))
+  // console.log(users)
+}
+console.log(users)
+users.forEach(element=>{
+  var id5=element.id
+   var id6="#"+id5+"D"
+$(id6).click(function(){
+  users.forEach(element => {
+  if(id5==element.id){
+   console.log(id5+" in del 1  "+id6+" in del "+element.id)
+   $("#userDeleting").text("Are you sure you want delete user '"+id5+"'")
+$("#deleteYes").click(function(){
+  console.log("in delete yes click")
+  for(let i in users){
+    // console.log("in for loop"+i)
+    if(id5==users[i].id){
+      console.log("spliced")
+
+      users.splice(i,1)
+      console.log(users)
+    }
+  }
+  localStorage.setItem("users",JSON.stringify(users))
+  localStorage.setItem("delModal",'true')
+  localStorage.setItem("delModalid", id5)
+})
+  }
+})
+})
+})
+
+  })
+</script>
+
+<div class="modal fade" id="Delete">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" >
+        <div class="modal-header">
+          <h4> <i class="fas fa-exclamation-triangle"></i> Confirm</h4>
+          <button type="button" class="close"data-dismiss="modal" >&times</button>
+        </div>
+        <div class="modal-body"><p id="userDeleting"> Are you sure you want delete user</p></div>
+        <div class="modal-footer">
+          <form action="dashboard.html">
+          <button type="submit" class="btn btn-primary" id="deleteYes" >Yes</button> 
+          <button class="btn btn-danger " type="button" data-dismiss="modal">No</button></form>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="abc"> </div>
+  <script>
+    $(document).ready(function(){
+      console.log("on change")
+$("#myselect").change(function(){
+  console.log("gggg")
+  var tempArr2
+if(localStorage.getItem("tempArr")==null){
+  tempArr2=[]
+}
+else{
+  tempArr2=JSON.parse(localStorage.getItem("tempArr"))
+}
+console.log(tempArr2)
+tempArr2.forEach(element=>{
+  var id5=element.id
+   var id6="#"+id5+"E"
+$(id6).click(function(){
+tempArr2.forEach(element => {
+  if(id5==element.id){
+    console.log(element.admin)
+    $("#textChange").text("Edit User")
+$('#userId').val(element.id)
+$('#userId').prop('disabled',true)
+$('#userName').val(element.name)
+$('#email1').val(element.email)
+$('#pwd1').val(element.pass)
+$("#pwd1").attr("type","text")
+$('#dob').val(element.date)
+// $('#myselectss').attr("selected",element.org)
+$('#myselectss option[value="'+element.org+'"]').attr("selected", "selected");
+$('#adminCheck').prop("checked",element.admin)
+localStorage.setItem("edited",'true')
+// localStorage.setItem("editedModal",'true')
+localStorage.setItem('editId4',element.id)
+// localStorage.setItem("upModal",'true')
+console.log(localStorage.getItem('upModal'))
+  }
+})
+})
+})
+})
+$("#userAddi").click(function(){
+  console.log("clicked add user")
+$("#textChange").text("New User")
+$('#userId').val('')
+$('#userId').prop("disabled",false)
+$('#userName').val('')
+$('#email1').val('')
+$('#pwd1').val('')
+$("#pwd1").attr("type","password")
+$('#dob').val('')
+// $('#myselectss').attr("selected",element.org)
+$('#myselectss option[value=""]').attr("selected", "selected");
+$('#adminCheck').prop("checked", false)
+})
+})
+  </script>
+  <script>
+$(document).ready(function(){
+  console.log("on change delete")
+$('#myselect').change(function(){
+  console.log("dddd")
+  var users
+if(localStorage.getItem("users")==null){
+  users=[]
+}
+else{
+  users=JSON.parse(localStorage.getItem("users"))
+  // console.log(users)
+}
+console.log(users)
+users.forEach(element=>{
+  var id5=element.id
+   var id6="#"+id5+"D"
+$(id6).click(function(){
+  users.forEach(element => {
+  if(id5==element.id){
+    $("#userDeleting").text("Are you sure you want delete user '"+id5+"'")
+   console.log(id5+" in del 1  "+id6+" in del "+element.id)
+$("#deleteYes").click(function(){
+  console.log("in delete yes click")
+  for(let i in users){
+    // console.log("in for loop"+i)
+    if(id5==users[i].id){
+      console.log("spliced")
+
+      users.splice(i,1)
+      console.log(users)
+    }
+  }
+  localStorage.setItem("users",JSON.stringify(users))
+  localStorage.setItem("delModal",'true')
+  localStorage.setItem("delModalid", id5)
+
+})
+  }
+})
+})
+})
+
+})
+
+})
+  </script>
+
+<div class="modal fade" id="alertModal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Alert</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      
+      <!-- Modal body -->
+      <div class="modal-body">
+        <p id="userAdds">User added successfully</p>
+        <p id="userupdates">User details updated successfully</p>
+        <p id="userDeletes">User Deleted</p>
+      </div>
+      
+      
+    </div>
+  </div>
+</div>
+<script>
+  function hiding(){
+  console.log("in hiding fun")
+    $('#alertModal').modal("hide"); 
+    }
+$(document).ready(function(){
+var delModal=localStorage.getItem("delModal")
+var upmodal=localStorage.getItem('upModal')
+var addmodal=localStorage.getItem('addModal')
+var delModalid=localStorage.getItem('delModalid')
+var editModalid=localStorage.getItem('editId4')
+var addmodalid=localStorage.getItem('addModalId')
+console.log(upmodal)
+if(delModal=='true'){
+  $("#alertModal").modal("show")
+  localStorage.setItem("delModal",'false')
+  $('#userAdds').hide()
+  $('#userupdates').hide()
+  $('#userDeletes').show()
+  $('#userDeletes').text(delModalid+' user Deleted')
+  $('#userDeletes').css({'color':'red'})
+  setTimeout("hiding()",15000)
+}
+console.log(upmodal)
+if(upmodal=='true'){
+  $("#alertModal").modal("show")
+  localStorage.setItem("upModal",'false')
+  console.log(localStorage.getItem('upModal'))
+  $('#userAdds').hide()
+  $('#userDeletes').hide()
+  $('#userupdates').show()
+  $('#userupdates').text(editModalid+' user details updated successfully')
+  $('#userupdates').css({'color':'green'})
+  setTimeout("hiding()",15000)
+}
+if(addmodal=='true'){
+  $("#alertModal").modal("show")
+  localStorage.setItem("addModal",'false')
+  $('#userDeletes').hide()
+  $('#userupdates').hide()
+  $('#userAdds').show()
+  $('#userAdds').text(addmodalid+' user added successfully')
+  $('#userAdds').css({'color':'green'})
+  setTimeout("hiding()",15000)
+}
+})
+
+</script>
+   </section>
+   <footer></footer>
+</body>
+<script src="dashboard.js"></script>
+</html>

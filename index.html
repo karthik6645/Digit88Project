@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <!-- <script src="https://kit.fontawesome.com/c795ee9098.js" crossorigin="anonymous"></script> -->
+
+</head>
+<body >
+   <header></header>
+   <nav class="container border mt-2 mb-2"><h2>Dashboard</h2></nav>
+   <section>
+    <div class="container-fluid border pb-4" id="signIn">
+        <center><h2 id="signinName" class="pt-3">SIGN IN</h2></center><hr>
+        <span id="successMsg" class="mb-4" style="color: green; background-color: lightgreen;"></span>
+        <form action="dashboard.html" onsubmit="return validiateLog()">
+          <div class="form-group">
+            <input type="text" class="form-control dim" id="email" placeholder="userId/Email" name="email" required>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control dim" id="pwd" placeholder="Password" name="pswd" required>
+          </div>
+          <div class="form-group">
+            <span id="msg"></span>
+          </div>
+          <button type="submit" class="btn btn-primary mx-auto" style="display: block; " id="btnbg">Submit</button>
+          <a href="signUp.html" style="text-decoration: none;" class="float-right">Sign Up</a> <a href="#" style="text-decoration: none;" class="float-left" id="forgotClick">forgot password</a>
+        </form>
+       
+      </div>
+      <div class="container-fluid border pb-5" id="signIn2">
+        <center><h2 id="signinName" class="pt-3">User details</h2></center><hr>
+         <!-- <form action="#"> -->
+          <div class="form-group">
+            <input type="text" class="form-control dim" id="email2" placeholder="userId/Email" name="email" required>
+            <span id="msg2"></span>
+          </div>
+          <button type="submit" class="btn btn-primary btnColor float-right" id="userVerify" style="display: block;background-color: #f6720e;">Submit</button>
+          <button class="btn btn-secondary float-left" id="backLog"style="display: block;" >Back</button>
+         <!-- </form> -->
+      </div>
+      <div class="container-fluid border pb-5" id="signIn3">
+        <center><h2 id="signinName" class="pt-3">Change password</h2></center><hr>
+         <form action="index.html" onsubmit="return passChange()" >
+          <div class="form-group">
+            <input type="password" class="form-control dim" id="email3" placeholder="New password" name="email" required>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control dim" id="email4" placeholder="Confirm password" name="email" required>
+            <span id="msg3"></span>
+          </div>
+          <button type="submit" class="btn btn-primary btnColor float-right" style="display: block;background-color: #f6720e;" id="changeP" >Save</button>
+          <button class="btn btn-secondary float-left" id="backUser" style="display: block;">Back</button>
+         </form>
+      </div>
+      <script>
+        function timeOut1(){
+          $('#msg2').hide()
+          $('#msg2').text('')
+        }
+        function timeOut2(){
+          $('#msg3').hide()
+          $('#msg3').text('')
+        }
+        function timeOut3(){
+          $('#successMsg').hide()
+          $('#successMsg').text('')
+        }
+       $(document).ready(function(){
+        var users
+if(localStorage.getItem("users")==null){
+users=[]
+}else{
+users=JSON.parse(localStorage.getItem("users"))
+}
+ console.log(users)
+        // $("#successMsg").hide()
+        $('#signIn2').hide()
+        $('#signIn3').hide()
+        $('#forgotClick').click(function(){
+         $('#signIn').hide()
+         $('#signIn2').show()
+         $('#signIn3').hide()
+        })
+        $("#backLog").click(function(){
+          $('#signIn').show()
+         $('#signIn2').hide()
+         $('#signIn3').hide()
+        })
+        $('#backUser').click(function(){
+          $('#signIn').hide()
+         $('#signIn2').show()
+         $('#signIn3').hide()
+        })
+        $("#userVerify").click(function(){
+         var email2=$("#email2").val()
+         for(let i in users){
+           if(users[i].id==email2 || users[i].email==email2){
+            $('#signIn').hide()
+            $('#signIn2').hide()
+            $('#signIn3').show()
+           }else if(email2.length==0){
+            $('#msg2').show()
+              $('#msg2').text('Input filed is required').css({"color":"red"})
+              setTimeout('timeOut1()',5000)
+           }else{
+             $('#msg2').show()
+              $('#msg2').text('User does not exist please signUp').css({"color":"red"})
+              setTimeout('timeOut1()',5000)
+           }
+         }
+        })
+        // 
+       })
+
+      </script>
+      <script src="index.js"></script>
+      </section>
+   <footer></footer>
+</body>
+</html>
